@@ -15,7 +15,11 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-//        User::factory(5)->create()->after();
+        if(!User::where('email', 'admin@admin.com')->exists()){
+            $admin = User::factory()->withEmail('admin@admin.com')->create();
+            $admin->removeRole('customer');
+            $admin->assignRole('admin');
+        }
         User::factory(5)->create();
     }
 }
