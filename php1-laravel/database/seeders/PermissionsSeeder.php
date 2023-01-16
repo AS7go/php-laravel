@@ -47,9 +47,11 @@ class PermissionsSeeder extends Seeder
         $editor->givePermissionTo('Edit Categories');
         $editor->givePermissionTo('Delete Categories');
         $editor->givePermissionTo('Publish Categories');
-//        $editor->givePermissionTo('Update Orders');
 
         $admin = Role::create(['name' => 'admin']);
+//
+//        $editor->givePermissionTo('Update Orders');
+
 
 //        $editor = Role::create(['name' => 'editor']);
 //        $editor->givePermissionTo('publish articles');

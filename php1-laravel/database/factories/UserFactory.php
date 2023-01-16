@@ -33,13 +33,14 @@ class UserFactory extends Factory
         ];
     }
 
-//    public function configure()
-//    {
-//        return $this->afterCreating(function (User $user) {
-//            $role = Role::findByName('name');
+    public function configure()
+    {
+        return $this->afterCreating(function (User $user) {
+            $role = Role::findByName('customer');
+            $user->assignRole($role);
 //            dd($role);
-//        });
-//    }
+        });
+    }
 
 
     /**
