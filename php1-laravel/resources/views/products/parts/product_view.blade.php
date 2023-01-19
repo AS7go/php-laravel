@@ -16,8 +16,7 @@
             <hr>
             <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-{{--                    <a href="{{ route('products.show', $product) }}"--}}
-                    <a href="#"
+                    <a href="{{ route('products.show', $product) }}"
                        class="btn btn-sm btn-outline-dark">
                         {{ __('Show') }}
                     </a>

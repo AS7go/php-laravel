@@ -19,6 +19,12 @@
                                 @each('products.parts.product_view', $products, 'product')
                             </div>
                         </div>
+                        <br>
+                        <div class="col-md-12">
+                            <div class="row">
+                                @each('categories.parts.category_view', $categories, 'category')
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
