@@ -33,7 +33,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = RouteServiceProvider::USER_ACCOUNT;
 
     /**
      * Create a new controller instance.
@@ -52,19 +52,16 @@ class RegisterController extends Controller
         $user = User::create($fields);
         $user->assignRole('customer');
 
-//        dd($user);
-
         event(new Registered($user));
-//        event(new Registered($user = $this->create($request->all())));
 
         $this->guard()->login($user);
 
-        if($response = $this->registered($request, $user)){
+        if ($response = $this->registered($request, $user)) {
             return $response;
         }
 
         return $request->wantsJson()
-            ? new JsonResponse([],201)
+            ? new JsonResponse([], 201)
             : redirect($this->redirectPath());
     }
 }
