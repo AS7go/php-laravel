@@ -22,7 +22,8 @@
                                     @foreach($categories as $category)
                                         <tr>
                                             <td class="text-center">@include('categories.parts.category_view', ['category' => $category])</td>
-                                            <td class="text-center"> {{$category->products_count}} </td>
+{{--                                            <td class="text-center"> {{$category->products_count}} </td>--}}
+                                            <td class="text-center"> {{ $category->products->count() }} </td>
                                         </tr>
                                     @endforeach
                                     </tbody>
