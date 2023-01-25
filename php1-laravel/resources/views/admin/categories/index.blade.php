@@ -31,6 +31,7 @@
                             <td class="text-center" scope="col">{{ $category->name }}</td>
                             <td class="text-center" scope="col">{{ $category->description }}</td>
                             <td class="text-center" scope="col">{{ $category->products_count }}</td>
+{{--                            <td class="text-center" scope="col">{{ $category->products->count() }}</td>--}}
                             <td class="text-center" scope="col">
                                 @if ($category->parent)
                                     <a href="{{ route('admin.categories.edit', $category->parent_id) }}">{{ $category->parent->name }}</a>
