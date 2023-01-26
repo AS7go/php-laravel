@@ -158,4 +158,11 @@ return [
 
         'store' => 'default',
     ],
+
+    'access' => [
+        'categories' => [
+            'publish' => 'Publish Categories', //изменения только в одном файле, не нужно прыгать по проекту
+            'edit' => 'Edit Categories' //изменения только в одном файле, не нужно прыгать по проекту
+        ]
+    ]
 ];
