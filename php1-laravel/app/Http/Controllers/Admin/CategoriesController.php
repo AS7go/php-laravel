@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\CreateCategory;
 use App\Http\Requests\Admin\UpdateCategory;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class CategoriesController extends Controller
 {
@@ -39,7 +40,7 @@ class CategoriesController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(CreateCategory $request)
     {
@@ -81,11 +82,13 @@ class CategoriesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
-     * @return \Illuminate\Http\Response
+     * @param Category $category
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($id)
+    public function destroy(Category $category)
     {
-        //
+        $this->middleware('permission:' . config('permission.access.categories.delete'));
+        $category->deleteOrFail();
+        return redirect()->route('admin.categories.index');
     }
 }
