@@ -16,7 +16,6 @@ class CreateCategory extends FormRequest
         /**
          * @var User $user
          */
-//        dd(auth()->user()->getAllPermissions());
 //        dd(auth()->user()->can(config('permission.access.categories.publish')));
         return auth()->user()->can(config('permission.access.categories.publish'));
     }
