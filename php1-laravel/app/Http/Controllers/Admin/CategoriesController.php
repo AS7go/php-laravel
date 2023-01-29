@@ -18,7 +18,7 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $categories = Category::with('parent:id,name')->withCount('products')->orderByDesc('id')->paginate(5);
+        $categories = Category::with('parent:id,name')->withCount('products')->orderByDesc('id')->paginate(10);
 
         return view('admin/categories/index', compact('categories'));
     }
@@ -42,7 +42,7 @@ class CategoriesController extends Controller
      */
     public function store(CreateCategory $request)
     {
-//        dd($request->validated()); //name, description, parent_id
+//        dd($request->validated());
 
         Category::create($request->validated());
         return redirect()->route('admin.categories.index');

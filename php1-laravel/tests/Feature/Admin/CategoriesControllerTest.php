@@ -14,7 +14,7 @@ class CategoriesControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    // тестовая база laravel_testing и env.testing иначе сотрет основную
+    // тестовая база laravel_testing и env.testing, иначе сотрет основную
 
     public function setUp(): void
     {
@@ -27,36 +27,38 @@ class CategoriesControllerTest extends TestCase
 
     protected function afterRefreshingDatabase()
     {
-        $this->seed();
+        $this->seed(); //run database/seeders/DatabaseSeeder.php
     }
-// -------------------------------------------------------------------------------------
-//    public function test_admin_allow_see_categories()
-//    {
-//        $user = User::role('admin')->first();
-//        $categories = Category::orderByDesc('id')->paginate(5)->pluck('name')->toArray();
-//        $response = $this->actingAs($user)->get(route('admin.categories.index'));
-//
-////        dd(Category::orderByDesc('id')->paginate(10));
-//
-//        $response->assertStatus(200);
-//        $response->assertViewIs('admin.categories.index');
-//        $response->assertSeeInOrder($categories);
-//    }
-//
-//    public function test_customer_not_allow_see_categories()
-//    {
-//        $user = User::role('customer')->first();
-//        $response = $this->actingAs($user)->get(route('admin.categories.index'));
-//
-////        $response->assertStatus(200); //тест выдаст ошибку т.к. ожидаем 403
-//        $response->assertStatus(403); //тест пройдет
-//    }
+// =============================================================================================================
+    public function test_admin_categories_index_200()
+    {
+        $response = $this->actingAs($this->getUser())->get(route('admin.categories.index'));
+        $response->assertStatus(200);
+    }
+
+    public function test_customer_categories_index_403()
+    {
+        $response = $this->actingAs($this->getUser('customer'))->get(route('admin.categories.index'));
+        $response->assertStatus(403);
+    }
+
+    public function test_see_admin_admin_categories_create_200()
+    {
+        $response = $this->actingAs($this->getUser('admin'))->get(route('admin.categories.create'));
+        $response->assertStatus(200);
+    }
+
+    public function test_see_customer_categories_create_403()
+    {
+        $response = $this->actingAs($this->getUser('customer'))->get(route('admin.categories.create'));
+        $response->assertStatus(403);
+    }
 
 // =================================================================
 
-    public function test_admin_allow_see_categories()
+    public function test_admin_allow_see_categories_200()
     {
-        $categories = Category::orderByDesc('id')->paginate(5)->pluck('name')->toArray();
+        $categories = Category::orderByDesc('id')->paginate(10)->pluck('name')->toArray();
         $response = $this->actingAs($this->getUser())->get(route('admin.categories.index'));
 
 //        dd(Category::orderByDesc('id')->paginate(10));
@@ -66,7 +68,7 @@ class CategoriesControllerTest extends TestCase
         $response->assertSeeInOrder($categories);
     }
 
-    public function test_customer_not_allow_see_categories()
+    public function test_customer_is_not_allow_to_see_categories_403()
     {
         $response = $this->actingAs($this->getUser('customer'))->get(route('admin.categories.index'));
         $response->assertStatus(403);
@@ -94,7 +96,7 @@ class CategoriesControllerTest extends TestCase
 
     public function test_category_with_invalid_data()
     {
-        $data = ['name'=> 'A'];
+        $data = ['name' => 'A'];
 
         $response = $this->actingAs($this->getUser())
             ->post(
@@ -109,9 +111,33 @@ class CategoriesControllerTest extends TestCase
 
     }
 
+    public function test_see_admin_dashboard_200()
+    {
+        $response = $this->actingAs($this->getUser('admin'))->get(route('admin.dashboard'));
+        $response->assertStatus(200);
+    }
+    public function test_see_customer_dashboard_403()
+    {
+        $response = $this->actingAs($this->getUser('customer'))->get(route('admin.dashboard'));
+        $response->assertStatus(403);
+    }
+
+    public function test_database_users_email_admin_admin_com_200()
+    {
+        $this->assertDatabaseHas('users', [
+            'email' => 'admin@admin.com'
+        ]);
+    }
+
+    public function test_invalid_path_categories_404()
+    {
+        $response = $this->get('/categories_err_path');
+        $response->assertStatus(404);
+    }
+
     public function getUser(string $role = 'admin')
     {
         return User::role($role)->first();
-
     }
+
 }

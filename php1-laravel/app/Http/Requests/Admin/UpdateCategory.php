@@ -30,7 +30,7 @@ class UpdateCategory extends FormRequest
         $categoryId = $this->route('category')->id;
 
         return [
-//            'name' => ['required', 'string', 'min:2', 'max:50', 'unique:categories'], //выдаст ошибку при редактировании, (повторение поля). Решение-строка ниже ignore...
+//            'name' => ['required', 'string', 'min:2', 'max:50', 'unique:categories'], //при редактировании-ошибка (повторение поля) ignore...
             'name' => ['required', 'string', 'min:2', 'max:50', Rule::unique('categories', 'name')->ignore($categoryId)],
             'description' => ['nullable', 'string'],
             'parent_id' => ['nullable', 'exists:App\Models\Category,id'],
