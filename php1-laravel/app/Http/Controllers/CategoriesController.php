@@ -14,7 +14,7 @@ class CategoriesController extends Controller
      */
     public function index(Category $categories)
     {
-        $categories = Category::paginate(5);
+        $categories = Category::paginate(10);
         return view('categories/index', compact('categories'));
     }
 
@@ -26,7 +26,7 @@ class CategoriesController extends Controller
      */
     public function show(Category $category)
     {
-        $products = $category->products()->paginate(9);
+        $products = $category->products()->paginate(10);
         return view('categories/show', compact('category', 'products'));
 
     }

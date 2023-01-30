@@ -31,7 +31,7 @@ class PermissionsSeeder extends Seeder
 
         Permission::create(['name' => 'Edit Categories']);
         Permission::create(['name' => 'Delete Categories']);
-        Permission::create(['name' => 'Publish Categories']);
+        Permission::create(['name' => 'Publish Categories']); //config/permission.php
 
         Permission::create(['name' => 'Update Orders']);
 
