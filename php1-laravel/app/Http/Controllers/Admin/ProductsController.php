@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CreateProductRequest;
 use App\Models\Category;
 use App\Models\Product;
-use App\Repositories\Contract\ProductRepositoryContract;
+use App\Repositories\Contracts\ProductRepositoryContract;
 use App\Repositories\ProductRepository;
 use App\Services\FileStorageService;
 use Illuminate\Http\Request;
@@ -21,7 +21,8 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $products = Product::with('categories')->paginate(5);
+        $products = Product::with('categories')->orderByDesc('created_at')->paginate(5);
+//        $products = Product::with('categories')->paginate(5);
 //        dd($products[0]->categories);
         return view('admin/products/index', compact('products'));
     }
@@ -42,19 +43,13 @@ class ProductsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param CreateProductRequest $request
-     * @return Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(CreateProductRequest $request, ProductRepositoryContract $repository)
     {
-        \DB::beginTransaction();
-        dd($repository->create($request));
-//        $data = $request->validated();
-//        $categories = $data['categories'];
-//        unset($data['categories']);
-//        $product = Product::create($data);
-        \DB::rollBack();
-//        $product->categories()->attach($categories);
-//        dd($data, $product->categories);
+        return $repository->create($request) ?
+            redirect()->route('admin.products.index') :
+            redirect()->back()->withInput();
     }
 
     /**
@@ -63,7 +58,8 @@ class ProductsController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public
+    function edit($id)
     {
         //
     }
@@ -75,7 +71,8 @@ class ProductsController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public
+    function update(Request $request, $id)
     {
         //
     }
@@ -86,7 +83,8 @@ class ProductsController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public
+    function destroy($id)
     {
         //
     }

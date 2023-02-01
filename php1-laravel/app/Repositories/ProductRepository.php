@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Http\Requests\Admin\CreateProductRequest;
 use App\Models\Product;
-use App\Repositories\Contract\ProductRepositoryContract;
+use App\Repositories\Contracts\ProductRepositoryContract;
 
 class ProductRepository implements ProductRepositoryContract
 {
@@ -17,15 +17,13 @@ class ProductRepository implements ProductRepositoryContract
             $categories = $request->get('categories', []);
             $product = Product::create($data);
             $this->setCategories($product, $categories);
-//            dd($data, $categories);
-            dd($product, $product->categories);
 
-            \DB::rollBack();
-//            \DB::commit();
+            \DB::commit();
 
-            return new Product();
+//            return new Product();
+            return $product;
         } catch (\Exception $exception) {
-//            \DB::rollBack();
+            \DB::rollBack();
             logs()->warning($exception);
 
             return false;
