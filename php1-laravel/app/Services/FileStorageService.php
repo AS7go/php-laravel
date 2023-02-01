@@ -10,14 +10,16 @@ use Illuminate\Support\Str;
 class FileStorageService implements Contracts\FileStorageServiceContract
 {
 
-    public static function upload(string|UploadedFile $file): string
+    public static function upload(string|UploadedFile $file, string $additionPath = ''): string
     {
         // TODO: Implement upload() method.
         if (is_string($file)){
             return str_replace('public/storage', '', $file);
         }
 
-        $filePath = 'public/' . static::randName() . '.' . $file->getClientOriginalExtension();
+        $additionPath = !empty($additionPath) ? $additionPath . '/' : $additionPath;
+
+        $filePath = "public/{$additionPath}" . static::randName() . '.' . $file->getClientOriginalExtension();
         Storage::put($filePath, File::get($file));
 //        dd($filePath, $file);
         Storage::setVisibility($filePath, 'public'); //для облака

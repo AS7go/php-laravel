@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CreateProductRequest;
 use App\Models\Category;
 use App\Models\Product;
+use App\Repositories\Contract\ProductRepositoryContract;
+use App\Repositories\ProductRepository;
 use App\Services\FileStorageService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -42,18 +44,17 @@ class ProductsController extends Controller
      * @param CreateProductRequest $request
      * @return Response
      */
-    public function store(CreateProductRequest $request)
+    public function store(CreateProductRequest $request, ProductRepositoryContract $repository)
     {
-        $data = array_merge(
-            $request->validated(),
-            ['thumbnail'=>FileStorageService::upload($request->file('thumbnail'))]
-        );
-//        dd($data);
-        $categories = $data['categories'];
-        unset($data['categories']);
-        $product = Product::create($data);
-        $product->categories()->attach($categories);
-        dd($data, $product->categories);
+        \DB::beginTransaction();
+        dd($repository->create($request));
+//        $data = $request->validated();
+//        $categories = $data['categories'];
+//        unset($data['categories']);
+//        $product = Product::create($data);
+        \DB::rollBack();
+//        $product->categories()->attach($categories);
+//        dd($data, $product->categories);
     }
 
     /**
