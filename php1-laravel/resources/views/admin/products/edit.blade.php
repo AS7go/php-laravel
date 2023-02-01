@@ -22,7 +22,7 @@
                 <form action="{{ route('admin.products.update', $product) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-                    <div class="form-group row">
+                    <div class="form-group row pt-2">
                         <label for="title" class="col-md-4 col-form-label text-md-right">{{ __('Title') }}</label>
                         <div class="col-md-6">
                             <input id="title"
@@ -35,7 +35,7 @@
                             >
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row pt-2">
                         <label for="category"
                                class="col-md-4 col-form-label text-md-right">{{ __('Categories') }}</label>
                         <div class="col-md-6">
@@ -51,7 +51,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row pt-2">
                         <label for="SKU" class="col-md-4 col-form-label text-md-right">{{ __('SKU') }}</label>
                         <div class="col-md-6">
                             <input id="SKU"
@@ -64,7 +64,7 @@
                             >
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row pt-2">
                         <label for="price" class="col-md-4 col-form-label text-md-right">{{ __('Price') }}</label>
                         <div class="col-md-6">
                             <input id="price"
@@ -77,7 +77,7 @@
                             >
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row pt-2">
                         <label for="discount" class="col-md-4 col-form-label text-md-right">{{ __('Discount') }}</label>
                         <div class="col-md-6">
                             <input id="discount"
@@ -90,7 +90,7 @@
                             >
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row pt-2">
                         <label for="in_stock"
                                class="col-md-4 col-form-label text-md-right">{{ __('In Stock (Quantity)') }}</label>
                         <div class="col-md-6">
@@ -104,7 +104,7 @@
                             >
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row pt-2">
                         <label for="description"
                                class="col-md-4 col-form-label text-md-right">{{ __('Description') }}</label>
                         <div class="col-md-6">
@@ -115,7 +115,7 @@
                                       rows="10">{{ $product->description }}</textarea>
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row pt-2">
                         <label for="short_description"
                                class="col-md-4 col-form-label text-md-right">{{ __('Short Description') }}</label>
                         <div class="col-md-6">
@@ -126,7 +126,7 @@
 {{--                                      rows="10">{{ $product->short_description }}</textarea>--}}
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row pt-2">
                         <label for="thumbnail"
                                class="col-md-4 col-form-label text-md-right">{{ __('Thumbnail') }}</label>
                         <div class="col-md-6">
@@ -140,7 +140,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row pt-2">
                         <label for="images" class="col-md-4 col-form-label text-md-right">{{ __('Images') }}</label>
                         <div class="col-md-6">
                             <div class="row">
@@ -164,7 +164,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
+                    <div class="form-group row pt-2">
                         <div class="col-md-10 text-right">
                             <input type="submit" class="btn btn-info" value="Update">
                         </div>

@@ -1,0 +1,38 @@
+<?php
+
+namespace App\Services;
+
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+
+class FileStorageService implements Contracts\FileStorageServiceContract
+{
+
+    public static function upload(string|UploadedFile $file): string
+    {
+        // TODO: Implement upload() method.
+        if (is_string($file)){
+            return str_replace('public/storage', '', $file);
+        }
+
+        $filePath = 'public/' . static::randName() . '.' . $file->getClientOriginalExtension();
+        Storage::put($filePath, File::get($file));
+//        dd($filePath, $file);
+        Storage::setVisibility($filePath, 'public'); //для облака
+
+        return $filePath;
+    }
+
+    public static function remove(string $file)
+    {
+        // TODO: Implement remove() method.
+        Storage::delete($file);
+    }
+
+    public static function randName(): string
+    {
+        return Str::random() . '_' . time();
+    }
+}
