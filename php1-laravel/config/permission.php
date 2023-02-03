@@ -164,6 +164,11 @@ return [
             'publish' => 'Publish Categories', //изменения только в одном файле, не нужно прыгать по проекту
             'edit' => 'Edit Categories',
             'delete' => 'Delete Categories',
+        ],
+        'products' => [
+            'publish' => 'Publish Products',
+            'edit' => 'Edit Products',
+            'delete' => 'Delete Products',
         ]
     ]
 ];
