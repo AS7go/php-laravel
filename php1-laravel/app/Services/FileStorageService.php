@@ -12,8 +12,7 @@ class FileStorageService implements Contracts\FileStorageServiceContract
 
     public static function upload(string|UploadedFile $file, string $additionPath = ''): string
     {
-        // TODO: Implement upload() method.
-        if (is_string($file)){
+        if (is_string($file)) {
             return str_replace('public/storage', '', $file);
         }
 
