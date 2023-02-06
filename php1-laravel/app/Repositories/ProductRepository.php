@@ -9,7 +9,7 @@ use App\Repositories\Contracts\ProductRepositoryContract;
 
 class ProductRepository implements ProductRepositoryContract
 {
-    public function __construct(protected ImageRepositoryContract $imagesRepository){}
+    public function __construct(protected ImageRepositoryContract $imagesRepository) {}
 
     public function create(CreateProductRequest $request): Product|bool
     {
@@ -20,7 +20,12 @@ class ProductRepository implements ProductRepositoryContract
             $categories = $request->get('categories', []);
             $product = Product::create($data);
             $this->setCategories($product, $categories);
-            $this->imagesRepository->attach($product, 'images', $data['images'] ?? []);
+            $this->imagesRepository->attach(
+                $product,
+                'images',
+                $data['images'] ?? [],
+                $product->slug
+            );
 
             \DB::commit();
 

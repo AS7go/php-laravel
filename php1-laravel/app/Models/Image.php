@@ -21,15 +21,26 @@ class Image extends Model
 
     public function setPathAttribute($image)
     {
-        $this->attributes['path'] = FileStorageService::upload($image, 'gallery');
+//        dd($this->attributes);
+        $this->attributes['path'] = FileStorageService::upload(
+            $image,
+            $this->attributes['directory'] ?? null
+        );
     }
 
     public function url(): Attribute
     {
         return Attribute::make(
-            get: fn() => Storage::exists($this->attributes['path'])
-                ? Storage::url($this->attributes['path'])
-                : $this->attributes['path']
+            get: fn() => Storage::exists($this->imagePath)
+                ? Storage::url($this->imagePath)
+                : $this->imagePath
+        );
+    }
+
+    public function imagePath(): Attribute
+    {
+        return Attribute::get(
+            fn() => $this->attributes['directory'] . '/' . $this->attributes['path']
         );
     }
 }
