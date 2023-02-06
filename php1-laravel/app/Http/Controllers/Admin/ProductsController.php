@@ -56,12 +56,16 @@ class ProductsController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public
-    function edit($id)
+    function edit(Product $product)
     {
-        //
+        $categories = Category::all();
+        $productCategories = $product->categories()->get()->pluck('id')->toArray();
+//        dd($productCategories);
+
+        return view('admin/products/edit', compact('product','categories','productCategories'));
     }
 
     /**
@@ -84,8 +88,13 @@ class ProductsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public
-    function destroy($id)
+    function destroy(Product $product)
     {
-        //
+//        $product->categories()->detach($product->categories->pluck('id')->toArray());
+        $product->categories()->detach();
+        $product->delete();
+
+        return redirect()->route('admin.products.index');
+//        dd($product->categories->pluck('id'));
     }
 }

@@ -35,22 +35,25 @@
                             >
                         </div>
                     </div>
+
                     <div class="form-group row pt-2">
                         <label for="category"
                                class="col-md-4 col-form-label text-md-right">{{ __('Categories') }}</label>
                         <div class="col-md-6">
-                            <select id="category"
-                                    class="form-control @error('category') is-invalid @enderror"
-                                    name="category_id"
+                            <select name="categories[]"
+                                    id="categories"
+                                    class="form-control @error('categories') is-invalid @enderror"
+                                    multiple
                             >
                                 @foreach($categories as $category)
                                     <option value="{{ $category['id'] }}"
-                                            {{ $category['id'] === $product->category?->id ? 'selected' : '' }}
+                                            @if(in_array($category['id'], $productCategories)) selected @endif
                                     >{{ $category['name'] }}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
+
                     <div class="form-group row pt-2">
                         <label for="SKU" class="col-md-4 col-form-label text-md-right">{{ __('SKU') }}</label>
                         <div class="col-md-6">
@@ -91,16 +94,15 @@
                         </div>
                     </div>
                     <div class="form-group row pt-2">
-                        <label for="in_stock"
-                               class="col-md-4 col-form-label text-md-right">{{ __('In Stock (Quantity)') }}</label>
+                        <label for="quantity"
+                               class="col-md-4 col-form-label text-md-right">{{ __('Quantity') }}</label>
                         <div class="col-md-6">
-                            <input id="in_stock"
+                            <input id="quantity"
                                    type="number"
-                                   class="form-control @error('in_stock') is-invalid @enderror"
-                                   name="in_stock"
-                                   value="{{ $product->in_stock }}"
-                                   autocomplete="in_stock"
-                                   autofocus
+                                   class="form-control @error('quantity') is-invalid @enderror"
+                                   name="quantity"
+                                   value="{{ $product->quantity }}"
+                                   autocomplete="quantity"
                             >
                         </div>
                     </div>
@@ -113,17 +115,6 @@
                                       id="description"
                                       cols="30"
                                       rows="10">{{ $product->description }}</textarea>
-                        </div>
-                    </div>
-                    <div class="form-group row pt-2">
-                        <label for="short_description"
-                               class="col-md-4 col-form-label text-md-right">{{ __('Short Description') }}</label>
-                        <div class="col-md-6">
-                            <textarea name="short_description"
-                                      class="form-control @error('short_description') is-invalid @enderror"
-                                      id="short_description"
-                                      cols="30"
-{{--                                      rows="10">{{ $product->short_description }}</textarea>--}}
                         </div>
                     </div>
                     <div class="form-group row pt-2">
@@ -176,5 +167,5 @@
 @endsection
 
 @push('footer-scripts')
-{{--    @vite(['resources/js/images-preview.js', 'resources/js/images-actions.js'])--}}
+    @vite(['resources/js/images-preview.js', 'resources/js/image-actions.js'])
 @endpush
