@@ -58,14 +58,15 @@ class ProductsController extends Controller
      * @param int $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public
-    function edit(Product $product)
+    public function edit(Product $product)
     {
         $categories = Category::all();
         $productCategories = $product->categories()->get()->pluck('id')->toArray();
 //        dd($productCategories);
 
         return view('admin/products/edit', compact('product','categories','productCategories'));
+
+
     }
 
     /**
@@ -90,7 +91,6 @@ class ProductsController extends Controller
     public
     function destroy(Product $product)
     {
-//        $product->categories()->detach($product->categories->pluck('id')->toArray());
         $product->categories()->detach();
         $product->delete();
 
