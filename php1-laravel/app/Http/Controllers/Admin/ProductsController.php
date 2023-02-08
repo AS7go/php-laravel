@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CreateProductRequest;
+use App\Http\Requests\Admin\UpdateProductRequest;
 use App\Models\Category;
 use App\Models\Product;
 use App\Repositories\Contracts\ProductRepositoryContract;
@@ -63,10 +64,9 @@ class ProductsController extends Controller
         $categories = Category::all();
         $productCategories = $product->categories()->get()->pluck('id')->toArray();
 //        dd($productCategories);
+//        dd($product);
 
-        return view('admin/products/edit', compact('product','categories','productCategories'));
-
-
+        return view('admin/products/edit', compact('product', 'categories', 'productCategories'));
     }
 
     /**
@@ -76,10 +76,16 @@ class ProductsController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public
-    function update(Request $request, $id)
+    public function update(UpdateProductRequest $request, Product $product )
     {
-        //
+//        $categories = Category::all();
+//        $productCategories = $product->categories()->get()->pluck('id')->toArray();
+        $product->updateOrFail($request->validated());
+//        $productCategories->updateOrFail($request->validated());
+
+
+        return redirect()->route('admin.products.edit', $product);
+//        return redirect()->route('admin.products.index');
     }
 
     /**
@@ -88,8 +94,7 @@ class ProductsController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public
-    function destroy(Product $product)
+    public function destroy(Product $product)
     {
         $product->categories()->detach();
         $product->delete();
