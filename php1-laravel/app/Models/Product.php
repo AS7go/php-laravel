@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Kyslik\ColumnSortable\Sortable;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, Sortable;
 
     protected $fillable = [
         'title',
@@ -20,6 +21,14 @@ class Product extends Model
         'thumbnail',
         'quantity',
         'SKU',
+    ];
+
+    protected $sortableAs = ['followers_count'];
+
+    public $sortable = [
+        'title',
+        'id',
+        'quantity'
     ];
 
     public function categories()

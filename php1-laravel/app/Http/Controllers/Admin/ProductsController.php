@@ -22,9 +22,10 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $products = Product::with('categories')->orderByDesc('created_at')->paginate(5);
-//        $products = Product::with('categories')->paginate(5);
-//        dd($products[0]->categories);
+//        $products = Product::with('categories')->orderByDesc('created_at')->paginate(5);
+//        $products = Product::with('categories')->withCount('followers')->sortable()->paginate(5);
+        $products = Product::with('categories')->sortable()->paginate(5);
+
         return view('admin/products/index', compact('products'));
     }
 
@@ -63,8 +64,6 @@ class ProductsController extends Controller
     {
         $categories = Category::all();
         $productCategories = $product->categories()->get()->pluck('id')->toArray();
-//        dd($productCategories);
-//        dd($product);
 
         return view('admin/products/edit', compact('product', 'categories', 'productCategories'));
     }
@@ -78,14 +77,10 @@ class ProductsController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product )
     {
-//        $categories = Category::all();
-//        $productCategories = $product->categories()->get()->pluck('id')->toArray();
         $product->updateOrFail($request->validated());
-//        $productCategories->updateOrFail($request->validated());
-
 
         return redirect()->route('admin.products.edit', $product);
-//        return redirect()->route('admin.products.index');
+
     }
 
     /**
@@ -100,6 +95,5 @@ class ProductsController extends Controller
         $product->delete();
 
         return redirect()->route('admin.products.index');
-//        dd($product->categories->pluck('id'));
     }
 }
