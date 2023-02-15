@@ -13,7 +13,7 @@ class WishListController extends Controller
         auth()->user()->addToWish($product);
         Cart::instance('wishlist')->add($product->id, $product->title, 1, $product->endPrice)->associate($product);
 
-        notify()->success('Produck was added to wish list', position: 'topRight');
+        notify()->success('Product was added to wish list', position: 'topRight');
         return redirect()->back();
     }
 

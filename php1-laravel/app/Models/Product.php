@@ -53,8 +53,6 @@ class Product extends Model
 
     public function setThumbnailAttribute($image)
     {
-//        dd(strtolower(str_replace(' ', '_', $this->attributes['title'])));
-//        dd($image, $this);
         if (!empty($this->attributes['thumbnail'])) {
             FileStorageService::remove($this->attributes['thumbnail']);
         }
