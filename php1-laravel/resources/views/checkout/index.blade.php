@@ -107,7 +107,7 @@
                 </table>
                 <br>
                 <div class="col-12">
-{{--                    @include('checkout.payments.paypal')--}}
+                    @include('checkout.payments.paypal')
                 </div>
             </div>
         </div>

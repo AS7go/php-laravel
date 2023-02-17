@@ -45,12 +45,11 @@
                         <li class="nav-item">
                             <a href="{{ route('cart.index') }}" class="nav-link">
                                 {{ __('Cart') }}
-                                @if(Cart::instance('cart')->count()>0)
+                                @if (Cart::instance('cart')->count() > 0)
                                     ({{ Cart::instance('cart')->content()->count() }})
                                 @endif
                             </a>
                         </li>
-
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
@@ -94,5 +93,6 @@
     </div>
     <script src="{{ asset('js/iziToast.js') }}"></script>
 @include('vendor.lara-izitoast.toast')
+@stack('footer-scripts')
 </body>
 </html>
