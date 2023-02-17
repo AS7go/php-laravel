@@ -31,6 +31,11 @@ class Product extends Model
         'quantity'
     ];
 
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class);
+    }
+
     public function categories()
     {
         return $this->belongsToMany(Category::class);
@@ -45,8 +50,8 @@ class Product extends Model
     {
         return $this->belongsToMany(
             User::class,
-            'wish_list',
-            'product_id',
+            'wish_list', // какая таблица
+            'product_id', // что с чем связанно
             'user_id'
         );
     }
