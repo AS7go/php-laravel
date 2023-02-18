@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Payments;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateOrderRequest;
-use Illuminate\Http\Request;
 use Srmklive\PayPal\Services\PayPal;
 
 class PaypalController extends Controller
@@ -15,7 +14,7 @@ class PaypalController extends Controller
     {
         $this->payPalClient = new PayPal();
         $this->payPalClient->setApiCredentials(config('paypal'));
-        $this->payPalClient->setApiCredentials($this->payPalClient->getAccessToken());
+        $this->payPalClient->setAccessToken($this->payPalClient->getAccessToken());
     }
 
     public function create(CreateOrderRequest $request)
