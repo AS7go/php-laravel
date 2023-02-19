@@ -16,7 +16,7 @@ class PaypalController extends Controller
     {
         $this->payPalClient = new PayPal();
         $this->payPalClient->setApiCredentials(config('paypal'));
-        $this->payPalClient->setApiCredentials($this->payPalClient->getAccessToken());
+        $this->payPalClient->setAccessToken($this->payPalClient->getAccessToken());
     }
 
     public function create(CreateOrderRequest $request, OrderRepositoryContract $repository)
