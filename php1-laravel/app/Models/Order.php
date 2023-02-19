@@ -20,7 +20,9 @@ class Order extends Model
         "email",
         "city",
         "address",
-        "total"
+        "total",
+        "vendor_order_id"
+
     ];
 
     public function status() // связи

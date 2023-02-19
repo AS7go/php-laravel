@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->string('transaction_id')->nullable();
+            $table->string('vendor_order_id')->nullable();
         });
     }
 
@@ -26,8 +26,8 @@ return new class extends Migration
     public function down()
     {
         Schema::table('orders', function (Blueprint $table) {
-            if (Schema::hasColumn('orders', 'transaction_id')){
-                Schema::dropColumns('orders', 'transaction_id');
+            if (Schema::hasColumn('orders', 'vendor_order_id')){
+                Schema::dropColumns('orders', 'vendor_order_id');
             }
         });
     }

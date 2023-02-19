@@ -38,6 +38,7 @@ paypal.Buttons({
         }).then(function(res) {
             return res.json();
         }).then(function(orderData) {
+            console.log('orderData', orderData);
             return orderData.vendor_order_id;
         }).catch(function (error) {
             console.log('Error', error);
