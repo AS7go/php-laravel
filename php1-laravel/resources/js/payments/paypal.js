@@ -6,36 +6,33 @@ function getFields() {
         return obj;
     }, {})
 }
-//
-// function isEmptyFields() {
-//     const fields = getFields();
-//
-//     return Object.values(fields).some((item) => {
-//         return item.length < 1;
-//     })
-// }
-//
-// const headers = {
-//     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-//     'Accept': 'application/json',
-//     'Content-Type': 'application/json'
-// };
+
+function isEmptyFields() {
+    const fields = getFields();
+
+    return Object.values(fields).some((item) => {
+        return item.length < 1;
+    })
+}
+
+const headers = {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+};
 
 paypal.Buttons({
     onClick: function(data, actions) {
-        console.log(getFields());
-        return;
-
-        // if (isEmptyFields()) {
-        //     alert('Please fill the form');
-        //     return;
-        // }
+        if (isEmptyFields()) {
+            alert('Please fill the form');
+            return;
+        }
     },
 
     // Call your server to set up the transaction
     createOrder: function(data, actions) {
-        // return fetch('/paypal/order/create/', {
-        return fetch('/demo/checkout/api/paypal/order/create/', {
+        return fetch('/paypal/order/create/', {
+        // return fetch('/demo/checkout/api/paypal/order/create/', {
             method: 'post',
             headers: headers,
             body: JSON.stringify(getFields())
@@ -51,8 +48,8 @@ paypal.Buttons({
 
     // Call your server to finalize the transaction
     onApprove: function(data, actions) {
-        // return fetch('/paypal/order/' + data.orderID + '/capture/', {
-        return fetch('/demo/checkout/api/paypal/order/' + data.orderID + '/capture/', {
+        return fetch('/paypal/order/' + data.orderID + '/capture/', {
+        // return fetch('/demo/checkout/api/paypal/order/' + data.orderID + '/capture/', {
             method: 'post',
             headers: headers
         }).then(function(res) {
