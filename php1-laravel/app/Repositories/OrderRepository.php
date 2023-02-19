@@ -8,10 +8,11 @@ use App\Models\OrderStatus;
 class OrderRepository implements Contracts\OrderRepositoryContract
 {
 
-    public function create(array $request, float $total): Order|bool
+    public function create(array $request): Order|bool
     {
         $user = auth()->user();
         $status = OrderStatus::default()->first();
-        dd($user, $status);
+//        dd($user, $status, $request);
+        dd($user, $status, $request);
     }
 }

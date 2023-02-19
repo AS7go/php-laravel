@@ -26,9 +26,18 @@ class PaypalController extends Controller
             DB::beginTransaction();
             $total = Cart::instance('cart')->total();
             $paypalOrder = $this->createPaymentOrder($total);
-            dd($paypalOrder);
+            $request = array_merge(
+                $request->validated(),
+                [
+                    'vendor_order_id' =>$paypalOrder['id'],
+                    'total'=>$total
+                ]
+            );
+            $order = $repository->create($request);
 
             \DB::commit();
+
+            return response()->json($order);
         }catch (\Exception $exception){
             DB::rollBack();
             logs()->warning($exception);

@@ -6,5 +6,5 @@ use App\Models\Order;
 
 interface OrderRepositoryContract
 {
-    public function create(array $request, float $total): Order|bool;
+    public function create(array $request): Order|bool;
 }
