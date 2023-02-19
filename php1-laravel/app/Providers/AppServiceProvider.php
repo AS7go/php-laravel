@@ -8,6 +8,8 @@ use App\Repositories\Contracts\ProductRepositoryContract;
 use App\Repositories\ImageRepository;
 use App\Repositories\OrderRepository;
 use App\Repositories\ProductRepository;
+use App\Services\Contracts\PaypalServiceContract;
+use App\Services\PaypalService;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
@@ -16,7 +18,8 @@ class AppServiceProvider extends ServiceProvider
     public array $bindings = [
         ProductRepositoryContract::class => ProductRepository::class,
         ImageRepositoryContract::class => ImageRepository::class, //by default
-        OrderRepositoryContract::class => OrderRepository::class
+        OrderRepositoryContract::class => OrderRepository::class,
+        PaypalServiceContract::class => PaypalService::class
     ];
 
     /**
