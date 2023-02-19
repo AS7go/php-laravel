@@ -13,6 +13,6 @@ class OrderRepository implements Contracts\OrderRepositoryContract
         $user = auth()->user();
         $status = OrderStatus::default()->first();
 //        dd($user, $status, $request);
-        dd($user, $status, $request);
+        dd($status, $request);
     }
 }
