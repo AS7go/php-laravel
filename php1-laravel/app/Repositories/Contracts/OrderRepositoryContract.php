@@ -7,4 +7,7 @@ use App\Models\Order;
 interface OrderRepositoryContract
 {
     public function create(array $request): Order|bool;
+
+//    public function setTransaction(string $vendorOrderId, )
+
 }

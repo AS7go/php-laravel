@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->foreignId('transaction_id')->nullable()->constrained('transactions');
+            $table->string('vendor_order_id')->nullable();
         });
     }
 
@@ -26,8 +26,8 @@ return new class extends Migration
     public function down()
     {
         Schema::table('orders', function (Blueprint $table) {
-            if (Schema::hasColumn('orders', 'transaction_id')){
-                $table->dropForeign('transaction_id');
+            if (Schema::hasColumn('orders', 'vendor_order_id')){
+                Schema::dropColumns('orders', 'vendor_order_id');
             }
         });
     }

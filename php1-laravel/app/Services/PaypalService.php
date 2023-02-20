@@ -29,8 +29,8 @@ class PaypalService implements PaypalServiceContract
             $request = array_merge(
                 $request->validated(),
                 [
-                    'vendor_order_id' =>$paypalOrder['id'],
-                    'total'=>$total
+                    'vendor_order_id' => $paypalOrder['id'],
+                    'total' => $total
                 ]
             );
             $order = $repository->create($request);
@@ -38,13 +38,14 @@ class PaypalService implements PaypalServiceContract
             \DB::commit();
 
             return response()->json($order);
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             DB::rollBack();
             logs()->warning($exception);
 
             return response()->json(['error' => $exception->getMessage()], 422);
         }
     }
+
     protected function createPaymentOrder($total): array
     {
         return $this->payPalClient->createOrder([
@@ -58,5 +59,24 @@ class PaypalService implements PaypalServiceContract
                 ]
             ]
         ]);
+    }
+
+    public function capture(string $vendorOrderId, OrderRepositoryContract $repository)
+    {
+        try {
+            DB::beginTransaction();
+
+            $result = $this->payPalClient->capturePaymentOrder($vendorOrderId);
+
+            dd($result);
+            DB::commit();
+
+            return response()->json([]);
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            logs()->warning($exception);
+
+            return response()->json(['error' => $exception->getMessage()], 422);
+        }
     }
 }
