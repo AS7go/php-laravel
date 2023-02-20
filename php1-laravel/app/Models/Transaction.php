@@ -9,8 +9,8 @@ class Transaction extends Model
 {
     use HasFactory;
 
-    protected $fillable=[
-        'vendor_payment_id',
+    protected $fillable= [
+        'order_id',
         'payment_system',
         'user_id',
         'status'
@@ -23,12 +23,6 @@ class Transaction extends Model
 
     public function order()
     {
-        return $this->hasOne(Order::class);
+        return $this->belongsTo(Order::class);
     }
-
-    public function transaction()
-    {
-        return $this->belongsTo(Transaction::class);
-    }
-
 }

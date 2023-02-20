@@ -35,6 +35,11 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function transaction()
+    {
+        return $this->hasOne(Transaction::class);
+    }
+
     public function products() //таблицу order_product ларавел подхватит
     {
         return $this->belongsToMany(Product::class)->withPivot(['quantity', 'single_price']);

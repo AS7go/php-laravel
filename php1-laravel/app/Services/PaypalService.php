@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Helpers\TransactionAdapter;
 use App\Http\Requests\CreateOrderRequest;
 use App\Repositories\Contracts\OrderRepositoryContract;
 use App\Services\Contracts\PaypalServiceContract;
@@ -11,6 +12,8 @@ use Srmklive\PayPal\Services\PayPal;
 
 class PaypalService implements PaypalServiceContract
 {
+    const PAYMENT_SYSTEM = 'PAYPAL';
+
     protected PayPal $payPalClient;
 
     public function __construct()
@@ -35,14 +38,35 @@ class PaypalService implements PaypalServiceContract
             );
             $order = $repository->create($request);
 
-            \DB::commit();
+            DB::commit();
 
             return response()->json($order);
         } catch (\Exception $exception) {
             DB::rollBack();
-            logs()->warning($exception);
+            return $this->errorHandler($exception);
 
-            return response()->json(['error' => $exception->getMessage()], 422);
+        }
+    }
+
+    public function capture(string $vendorOrderId, OrderRepositoryContract $repository)
+    {
+        try {
+            DB::beginTransaction();
+
+            $result = $this->payPalClient->capturePaymentOrder($vendorOrderId);
+            $order = $repository->setTransaction($vendorOrderId, new TransactionAdapter(
+                self::PAYMENT_SYSTEM,
+                auth()->id(),
+                $result['status']
+            ));
+            $result['orderId'] = $order->id;
+//            dd($result);
+            DB::commit();
+
+            return response()->json($result);
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            return $this->errorHandler($exception);
         }
     }
 
@@ -61,22 +85,9 @@ class PaypalService implements PaypalServiceContract
         ]);
     }
 
-    public function capture(string $vendorOrderId, OrderRepositoryContract $repository)
+    protected function errorHandler(\Exception $exception)
     {
-        try {
-            DB::beginTransaction();
-
-            $result = $this->payPalClient->capturePaymentOrder($vendorOrderId);
-
-            dd($result);
-            DB::commit();
-
-            return response()->json([]);
-        } catch (\Exception $exception) {
-            DB::rollBack();
-            logs()->warning($exception);
-
-            return response()->json(['error' => $exception->getMessage()], 422);
-        }
+        logs()->warning($exception);
+        return response()->json(['error' => $exception->getMessage()], 422);
     }
 }
