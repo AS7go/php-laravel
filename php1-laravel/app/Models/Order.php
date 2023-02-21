@@ -20,7 +20,9 @@ class Order extends Model
         "email",
         "city",
         "address",
-        "total"
+        "total",
+        "vendor_order_id"
+
     ];
 
     public function status() // связи
@@ -31,6 +33,11 @@ class Order extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function transaction()
+    {
+        return $this->hasOne(Transaction::class);
     }
 
     public function products() //таблицу order_product ларавел подхватит
