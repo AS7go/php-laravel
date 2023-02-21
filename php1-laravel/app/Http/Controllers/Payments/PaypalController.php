@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Payments;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateOrderRequest;
+use App\Models\Order;
 use App\Services\Contracts\PaypalServiceContract;
+use Gloudemans\Shoppingcart\Facades\Cart;
 
 class PaypalController extends Controller
 {
@@ -19,8 +21,12 @@ class PaypalController extends Controller
 
     }
 
-    public function thankYou()
+    public function thankYou(string $vendorOrderId)
     {
+        Cart::instance('cart')->destroy();
 
+        $order = Order::with(['user', 'transaction', 'products'])->where('vendor_order_id', $vendorOrderId)->firstOrFail();
+
+        return view('thankyou/summary', compact('order'));
     }
 }
