@@ -16,7 +16,7 @@ class OrderRepository implements Contracts\OrderRepositoryContract
     public function create(array $request): Order|bool
     {
         $status = OrderStatus::default()->first();
-        $request = array_merge($request, ['status_id' => $status->id]);
+        $request = array_merge($request, ['status_id' => $status->id]); //order_statuses seed l24h0m36
         $order = auth()->user()->orders()->create($request);
 
         $this->addProductsToOrder($order);
