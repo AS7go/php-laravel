@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\OrderCreated;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,6 +19,14 @@ use Illuminate\Support\Facades\Route;
 //});
 
 Auth::routes();
+
+Route::get('/notify', function (){
+    dump ('start');
+    $order = \App\Models\Order::all()->last();
+    OrderCreated::dispatch($order);
+
+    dump('finish');
+});
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 

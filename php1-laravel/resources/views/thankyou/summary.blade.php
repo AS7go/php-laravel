@@ -32,8 +32,7 @@
                     </tbody>
                 </table>
                 <h4 class="card-subtitle mb-2 text-muted">Order total: <strong>{{ $order->total }}$</strong></h4>
-
-                {{--                <a href="{{ route('orders.generate.invoice', $order) }}" class="btn btn-outline-primary">Download Invoice</a>--}}
+{{--                <a href="{{ route('orders.generate.invoice', $order) }}" class="btn btn-outline-primary">Download Invoice</a>--}}
 {{--                <a href="{{ route('account.orders.show', $order) }}"--}}
 {{--                   class="btn btn-outline-primary">Order details</a>--}}
             </div>
