@@ -51,8 +51,8 @@ class Order extends Model
         return Attribute::get(fn() => $this->status->name === OrderStatusesEnum::InProcess->value);
     }
 
-//    public function routeNotificationFor($driver, $notification = null)
-//    {
-//        return 'some@test.com';
-//    }
+    public function fullName(): Attribute
+    {
+        return Attribute::get(fn() => ucfirst($this->attributes['name']) . ' ' . ucfirst($this->attributes['surname']));
+    }
 }

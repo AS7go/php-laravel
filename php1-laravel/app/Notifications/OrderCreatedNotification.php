@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class OrderCreatedNotification extends Notification
+class OrderCreatedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -40,7 +40,8 @@ class OrderCreatedNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        dump(self::class);
+//    $result = 5 / 0;
+        logs()->info(self::class);
         return (new MailMessage)
                     ->greeting("Hello {$notifiable->user->fullName}")
                     ->line('Your order was created!');
