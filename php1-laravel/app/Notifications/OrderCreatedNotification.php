@@ -8,6 +8,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Storage;
+use NotificationChannels\Telegram\TelegramFile;
+use NotificationChannels\Telegram\TelegramMessage;
 
 class OrderCreatedNotification extends Notification implements ShouldQueue
 {
@@ -18,7 +20,7 @@ class OrderCreatedNotification extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(public InvoicesServiceContract $invoicesService) //protected Invo... not work
+    public function __construct(public InvoicesServiceContract $invoicesService)
     {
         //
     }
@@ -31,18 +33,17 @@ class OrderCreatedNotification extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-//        return $notifiable?->user?->telegram_id ? ["telegram", "mail"] : ['mail'];
-        return ['mail'];
+        return $notifiable?->user?->telegram_id ? ["telegram", "mail"] : ['mail'];
     }
 
-//    public function toTelegram($notifiable)
-//    {
-//        return TelegramMessage::create()
-//            ->to($notifiable->user->telegram_id)
-//            ->content("Hello {$notifiable->user->fullName}")
-//            ->line("\nYour order was created!");
-////            ->button('See your wish list', url('account/wishlist'));
-//    }
+    public function toTelegram($notifiable)
+    {
+        return TelegramMessage::create()
+            ->to($notifiable->user->telegram_id)
+            ->content("Hello {$notifiable->user->fullName}")
+            ->line("\nYour order was created!");
+//            ->button('See your wish list', url('account/wishlist'));
+    }
 
 
     /**
