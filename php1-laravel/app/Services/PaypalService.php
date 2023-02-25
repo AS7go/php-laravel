@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\OrderCreated;
 use App\Helpers\TransactionAdapter;
 use App\Http\Requests\CreateOrderRequest;
 use App\Repositories\Contracts\OrderRepositoryContract;
@@ -62,6 +63,8 @@ class PaypalService implements PaypalServiceContract
             $result['orderId'] = $order->id;
 //            dd($result);
             DB::commit();
+
+            OrderCreated::dispatch($order);
 
             return response()->json($result);
         } catch (\Exception $exception) {
