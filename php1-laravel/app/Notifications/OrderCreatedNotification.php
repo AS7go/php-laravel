@@ -2,10 +2,12 @@
 
 namespace App\Notifications;
 
+use App\Services\Contracts\InvoicesServiceContract;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Storage;
 
 class OrderCreatedNotification extends Notification implements ShouldQueue
 {
@@ -16,7 +18,7 @@ class OrderCreatedNotification extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(public InvoicesServiceContract $invoicesService) //protected Invo... not work
     {
         //
     }
@@ -29,8 +31,19 @@ class OrderCreatedNotification extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
+//        return $notifiable?->user?->telegram_id ? ["telegram", "mail"] : ['mail'];
         return ['mail'];
     }
+
+//    public function toTelegram($notifiable)
+//    {
+//        return TelegramMessage::create()
+//            ->to($notifiable->user->telegram_id)
+//            ->content("Hello {$notifiable->user->fullName}")
+//            ->line("\nYour order was created!");
+////            ->button('See your wish list', url('account/wishlist'));
+//    }
+
 
     /**
      * Get the mail representation of the notification.
@@ -40,11 +53,19 @@ class OrderCreatedNotification extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-//    $result = 5 / 0;
         logs()->info(self::class);
-        return (new MailMessage)
+//        logs()->info('NOTIFIABLE: ' . $notifiable::class);
+//        logs()->info('Invoice: ' . $this->invoicesService::class);
+        $invoice = $this->invoicesService->generate($notifiable);
+
+        return (new MailMessage())
                     ->greeting("Hello {$notifiable->user->fullName}")
-                    ->line('Your order was created!');
+                    ->line('Your order was created!')
+                    ->line('You can read invoice data in attached file ')
+                    ->attach(Storage::disk('public')->path($invoice->filename), [
+                        'as'=>'name.pdf',
+                        'mime'=>'application/pdf',
+                    ]);
     }
 
     /**

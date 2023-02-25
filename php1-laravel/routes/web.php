@@ -27,6 +27,7 @@ Route::get('/invoice', function (){
     $invoice = $invoiceService->generate($order);
     dump ($order->total);
     dump ($invoice->url());
+    dump(Storage::disk('public')->path($invoice->filename));
     dump('finish');
 });
 
