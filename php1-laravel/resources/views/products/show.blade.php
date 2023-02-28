@@ -110,6 +110,6 @@
     {{--        </div>--}}
     {{--    </div>--}}
 @endsection
-{{--@push('footer-scripts')--}}
-{{--    @vite(['resources/js/product-actions.js'])--}}
-{{--@endpush--}}
+@push('footer-scripts')
+    @vite(['resources/js/product-actions.js'])
+@endpush
