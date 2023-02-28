@@ -5,6 +5,7 @@ namespace App\Listeners\Orders;
 use App\Events\OrderCreated;
 use App\Jobs\OrderCreatedJob;
 use App\Notifications\OrderCreatedNotification;
+use App\Services\Contracts\InvoicesServiceContract;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -29,6 +30,6 @@ class CreatedListener
     public function handle(OrderCreated $event)
     {
         logs()->info(self::class);
-        OrderCreatedJob::dispatch($event->order)->onQueue('emails')->delay(30);
+        OrderCreatedJob::dispatch($event->order)->onQueue('emails'); //->delay(30);
     }
 }
