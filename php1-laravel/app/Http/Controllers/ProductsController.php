@@ -33,7 +33,8 @@ class ProductsController extends Controller
 
     public function rate(Request $request, Product $product)
     {
-        $product->rateOnce(5);
+//        dd($request->get('star'));
+        $product->rateOnce($request->get('star'));
 
         return redirect()->back();
     }

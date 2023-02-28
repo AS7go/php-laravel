@@ -19,7 +19,7 @@
             <p>Price: {{ $product->end_price }}$</p>
             <p>SKU: {{ $product->SKU }}</p>
             <p>In stock: {{ $product->quantity }}</p>
-            {{--            <p>Rating: {{ round($product->averageRating(), 2) }}</p>--}}
+            <p>Rating: {{ round($product->averageRating(), 2) }}</p>
             <hr>
             <div>
                 <p>Product Category:
