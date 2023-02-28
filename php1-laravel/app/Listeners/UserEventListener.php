@@ -5,8 +5,6 @@ namespace App\Listeners;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Logout;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
 class UserEventListener
 {
@@ -40,5 +38,4 @@ class UserEventListener
             [UserEventListener::class, 'handleLogout']
         );
     }
-
 }
