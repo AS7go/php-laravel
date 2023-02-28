@@ -27,6 +27,14 @@ class ProductsController extends Controller
      */
     public function show(Product $product)
     {
+//        dd($product->user_rate);
         return view('products/show', compact('product'));
+    }
+
+    public function rate(Request $request, Product $product)
+    {
+        $product->rateOnce(5);
+
+        return redirect()->back();
     }
 }
