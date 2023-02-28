@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Kyslik\ColumnSortable\Sortable;
+use willvincent\Rateable\Rateable;
 
 class Product extends Model
 {
-    use HasFactory, Sortable;
+    use HasFactory, Sortable, Rateable;
 
     protected $fillable = [
         'title',
@@ -28,7 +29,7 @@ class Product extends Model
     public $sortable = [
         'title',
         'id',
-        'quantity'
+        'quantity',
     ];
 
     public function orders()
@@ -50,8 +51,8 @@ class Product extends Model
     {
         return $this->belongsToMany(
             User::class,
-            'wish_list', // какая таблица
-            'product_id', // что с чем связанно
+            'wish_list',
+            'product_id',
             'user_id'
         );
     }
@@ -104,6 +105,16 @@ class Product extends Model
     public function available(): Attribute
     {
         return Attribute::get(fn() => $this->attributes['quantity'] > 0);
+    }
+
+    public function userRate(): Attribute
+    {
+        return Attribute::get(function () {
+            return $this->ratings()->where([
+                ['rateable_id', $this->id],
+                ['user_id', auth()->id()],
+            ])?->first();
+        });
     }
 
 }
