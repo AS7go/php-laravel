@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Api\BaseController;
+use App\Http\Resources\Products\ProductsResource;
+use App\Http\Resources\Products\SingleProductResource;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ProductsController extends BaseController
@@ -10,13 +13,17 @@ class ProductsController extends BaseController
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return ProductsResource
      */
     public function index()
     {
-        dd('test');
-        $this->checkAbility('full');
+//        if(!$this->userCan('read')){
+//            return $this->notAllowedResponse();
+//        }
 
+        $products = Product::paginate(3);
+
+        return new ProductsResource($products);
     }
 
     /**
@@ -44,11 +51,15 @@ class ProductsController extends BaseController
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return SingleProductResource
      */
-    public function show($id)
+    public function show(Product $product)
     {
-        //
+        if (!$this->userCan('read')){
+            return $this->notAllowedResponse();
+        }
+
+        return new SingleProductResource($product);
     }
 
     /**
