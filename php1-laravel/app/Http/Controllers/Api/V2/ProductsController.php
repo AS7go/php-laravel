@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1;
+namespace App\Http\Controllers\Api\V2;
 
 use App\Http\Controllers\Api\BaseController;
-use App\Http\Resources\Products\ProductsResource;
-use App\Http\Resources\Products\SingleProductResource;
+use App\Http\Resources\ProductsV2\ProductsResource;
+use App\Http\Resources\ProductsV2\SingleProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -19,7 +19,7 @@ class ProductsController extends BaseController
     {
         $products = Product::paginate(3);
 
-        return new ProductsResource($products);
+        return new ProductsResource($products); //v2
     }
 
     /**
@@ -55,7 +55,7 @@ class ProductsController extends BaseController
             return $this->notAllowedResponse();
         }
 
-        return new SingleProductResource($product);
+        return new SingleProductResource($product); //V2
     }
 
     /**
