@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Products;
 
+use App\Http\Resources\Categories\CategoriesResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class SingleProductResource extends JsonResource
@@ -17,8 +18,9 @@ class SingleProductResource extends JsonResource
     {
         return [
             'id'=>$this->id,
-            'thumbnail'=>$this->thumbnailUrl,
-            'prices'=>$this->getPrices()
+            'thumbnail'=>url($this->thumbnailUrl),
+            'prices'=>$this->getPrices(),
+            'categories' => new CategoriesResource($this->categories)
         ];
     }
 
