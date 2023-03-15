@@ -6,6 +6,7 @@ use App\Services\FileStorageService;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Kyslik\ColumnSortable\Sortable;
 use willvincent\Rateable\Rateable;
@@ -72,10 +73,20 @@ class Product extends Model
     public function thumbnailUrl(): Attribute
     {
         return Attribute::make(
-            get: fn() => Storage::exists($this->attributes['thumbnail'])
-                ? Storage::url($this->attributes['thumbnail'])
-                : $this->attributes['thumbnail']
+            get: function () {
+                $key = "products.thumbnail.{$this->attributes['thumbnail']}";
+//                logs()->info('retrieving thumbnail ...');
+                if (!Cache::has($key)){ //защита от лишних запросов на сервер
+//                    logs()->info('retrieving from s3 ...');
+                    $link = Storage::temporaryUrl($this->attributes['thumbnail'], now()->addMinutes(10));
+                    Cache::put($key, $link, 550);
+                    return $link;
+                }
+
+                return Cache::get($key);
+            }
         );
+
     }
 
     public function slug(): Attribute
@@ -88,12 +99,12 @@ class Product extends Model
 
     public function endPrice(): Attribute
     {
-        return Attribute::get(function (){
-           $price = is_null($this->attributes['discount']) || $this->attributes['discount'] === 0
-           ? $this->attributes['price']
-           : ($this->attributes['price'] - ($this->attributes['price'] * ($this->attributes['discount'] / 100)));
+        return Attribute::get(function () {
+            $price = is_null($this->attributes['discount']) || $this->attributes['discount'] === 0
+                ? $this->attributes['price']
+                : ($this->attributes['price'] - ($this->attributes['price'] * ($this->attributes['discount'] / 100)));
 
-           return $price < 0 ? 1 : round($price, 2);
+            return $price < 0 ? 1 : round($price, 2);
         });
     }
 
