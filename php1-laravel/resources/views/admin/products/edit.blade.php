@@ -43,6 +43,7 @@
                             <select name="categories[]"
                                     id="categories"
                                     class="form-control @error('categories') is-invalid @enderror"
+                                    style="height: 500px"
                                     multiple
                             >
                                 @foreach($categories as $category)

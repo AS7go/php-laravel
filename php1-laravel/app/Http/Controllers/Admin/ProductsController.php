@@ -8,7 +8,6 @@ use App\Http\Requests\Admin\UpdateProductRequest;
 use App\Models\Category;
 use App\Models\Product;
 use App\Repositories\Contracts\ProductRepositoryContract;
-use App\Repositories\ProductRepository;
 use App\Services\FileStorageService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -23,7 +22,6 @@ class ProductsController extends Controller
     public function index()
     {
         $products = Product::with('categories')->withCount('followers')->sortable()->paginate(5);
-//        $products = Product::with('categories')->sortable()->paginate(5);
 
         return view('admin/products/index', compact('products'));
     }
@@ -36,7 +34,6 @@ class ProductsController extends Controller
     public function create()
     {
         $categories = Category::all();
-//        dd($categories);
         return view('admin/products/create', compact('categories'));
     }
 
@@ -56,7 +53,7 @@ class ProductsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function edit(Product $product)
@@ -70,23 +67,23 @@ class ProductsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
+     * @param UpdateProductRequest $request
+     * @param Product $product
+     * @param ProductRepositoryContract $repository
+     * @return \Illuminate\Http\RedirectResponse|void
      */
-    public function update(UpdateProductRequest $request, Product $product )
+    public function update(UpdateProductRequest $request, Product $product, ProductRepositoryContract $repository)
     {
-        $product->updateOrFail($request->validated());
-
-        return redirect()->route('admin.products.edit', $product);
-
+        return $repository->update($product, $request) ?
+            redirect()->route('admin.products.edit', $product) :
+            redirect()->back()->withInput();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
-     * @return \Illuminate\Http\Response
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Product $product)
     {
