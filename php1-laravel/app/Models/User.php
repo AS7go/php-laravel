@@ -74,7 +74,7 @@ class User extends Authenticatable
         $this->wishes()->detach($product);
     }
 
-    public function isWishedProduct(Product $product)
+    public function isWishedProduct(Product|int $product)
     {
         return (bool)$this->wishes()->find($product);
     }

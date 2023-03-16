@@ -34,9 +34,13 @@ Route::get('/invoice', function (){
 Route::get('/notify', function (){
     logs()->info('start');
 //    dd(route('account.wishlist'));
-    $order = \App\Models\Order::all()->last();
-    OrderCreated::dispatch($order);
+//    $order = \App\Models\Order::all()->last();
+//    OrderCreated::dispatch($order);
+    $product = \App\Models\Product::all()->last();
+    \App\Events\WishListProductUpdatedEvent::dispatch($product);
     logs()->info('finish');
+
+//    return view('home');
 });
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
