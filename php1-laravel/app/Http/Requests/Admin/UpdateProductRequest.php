@@ -14,8 +14,7 @@ class UpdateProductRequest extends FormRequest
      */
     public function authorize()
     {
-        return auth()->user()->can(config('permission.access.products.edit'));
-//        return false;
+        return auth()->user()->can(config('permission.access.products.publish'));
     }
 
     /**
@@ -25,19 +24,17 @@ class UpdateProductRequest extends FormRequest
      */
     public function rules()
     {
-        $productsId = $this->route('product')->id;
+        $productId = $this->route('product')->id;
 
         return [
-//            'title' => ['required', 'string', 'min:2', 'max:255', 'unique:products'],
-            'title' => ['required', 'string', 'min:2', 'max:255', Rule::unique('products', 'title')->ignore($productsId)],
+            'title' => ['required', 'string', 'min:2', 'max:255', Rule::unique('products', 'title')->ignore($productId)],
             'description' => ['nullable', 'string'],
-//            'SKU' => ['required', 'string', 'min:1', 'max:35', 'unique:products'],
-            'SKU' => ['required', 'string', 'min:1', 'max:35', Rule::unique('products', 'SKU')->ignore($productsId)],
+            'SKU' => ['required', 'string', 'min:1', 'max:35', Rule::unique('products', 'SKU')->ignore($productId)],
             'price' => ['required', 'numeric', 'min:1'],
             'discount' => ['required', 'numeric', 'min:0', 'max:99'],
             'quantity' => ['required', 'numeric', 'min:0'],
             'categories.*' => ['required', 'numeric', 'exists:App\Models\Category,id'],
-            'thumbnail' => ['required', 'image:jpeg,png'],
+            'thumbnail' => ['nullable', 'image:jpeg,png'],
             'images.*' => ['image:jpeg,png']
         ];
     }

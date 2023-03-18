@@ -20,7 +20,6 @@ class FileStorageService implements Contracts\FileStorageServiceContract
 
         $filePath = "public/{$additionPath}" . static::randName() . '.' . $file->getClientOriginalExtension();
         Storage::put($filePath, File::get($file));
-//        dd($filePath, $file);
         Storage::setVisibility($filePath, 'public'); //для облака
 
         return $filePath;
