@@ -23,7 +23,7 @@ class WishListProductUpdatedEvent implements ShouldBroadcast
     public function __construct(public Product $product, public string $message = '')
     {
         logs()->info(self::class);
-        $this->message = 'Product from your wish list was updated ';
+        $this->message = 'Product from your wish list was updated';
     }
 
     /**
@@ -31,10 +31,17 @@ class WishListProductUpdatedEvent implements ShouldBroadcast
      *
      * @return \Illuminate\Broadcasting\Channel|array
      */
-    public function broadcastOn()
+    public function broadcastOn(): array
     {
         logs()->info(self::class . '::broadcastOn');
-        return new Channel('product');
-//        return new PrivateChannel('product');
+        $followers = $this->product->followers()->get()->pluck('id');
+        logs()->info(json_encode($followers));
+        $channels = [];
+
+        foreach($followers as $followerId) {
+            $channels[] = new PrivateChannel("App.Models.User.{$followerId}");
+        }
+
+        return $channels;
     }
 }

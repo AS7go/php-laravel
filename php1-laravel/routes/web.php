@@ -36,7 +36,9 @@ Route::get('/notify', function (){
 //    dd(route('account.wishlist'));
 //    $order = \App\Models\Order::all()->last();
 //    OrderCreated::dispatch($order);
-    $product = \App\Models\Product::all()->last();
+//    $product = \App\Models\Product::all()->last();
+    $product = \App\Models\Product::find(41);
+//    dd($product->followers()->get()->pluck('id'));
     \App\Events\WishListProductUpdatedEvent::dispatch($product);
     logs()->info('finish');
 
