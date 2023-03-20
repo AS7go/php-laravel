@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
+Route::get('/', function () {
+    return view('welcome');
+});
 
 Auth::routes();
 
@@ -39,7 +39,8 @@ Route::get('/notify', function (){
     logs()->info('finish');
 });
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::resource('products', \App\Http\Controllers\ProductsController::class)->only(['index', 'show']);
 Route::resource('categories', \App\Http\Controllers\CategoriesController::class)->only(['index', 'show']);
